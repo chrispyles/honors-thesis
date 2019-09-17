@@ -1,0 +1,9 @@
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+Icon?
+.DS_Store
+.ipynb_checkpoints
+__pycache__
