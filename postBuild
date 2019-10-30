@@ -1,1 +1,1 @@
-gem install export-pull-requests
+gem install --local export-pull-requests
