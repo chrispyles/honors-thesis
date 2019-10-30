@@ -1,6 +1,2 @@
-\curl -sSL https://get.rvm.io | bash -s stable
-source ~/.bash_profile
-rvm install ruby-2.5.0
-rvm use --default ruby-2.5.0
+gem sources --add https://rubygems.org/
 gem install --user-install export-pull-requests
-export PATH=$PATH:~/.gem/ruby/2.5.0/gems/export-pull-requests-0.3.3/bin
