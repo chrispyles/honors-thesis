@@ -1,2 +1,2 @@
-sudo apt-get install ruby-full
+apt-get install ruby-full
 gem install 'export-pull-requests'
