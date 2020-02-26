@@ -9,3 +9,4 @@ Icon?
 __pycache__
 notebooks/config.py
 data/private
+config.py
