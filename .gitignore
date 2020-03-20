@@ -3,6 +3,7 @@
 *.fls
 *.log
 *.synctex.gz
+*.out
 Icon?
 .DS_Store
 .ipynb_checkpoints
