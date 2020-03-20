@@ -1,3 +1,4 @@
 data/datahub_pulls.jsonl filter=lfs diff=lfs merge=lfs -text
 data/datahub_sessions.jsonl filter=lfs diff=lfs merge=lfs -text
 data/*.jsonl filter=lfs diff=lfs merge=lfs -text
+data/posters.mat filter=lfs diff=lfs merge=lfs -text
