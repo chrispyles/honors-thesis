@@ -5,6 +5,7 @@ seaborn
 ipython
 ipywidgets
 datetime
-ray
 sklearn
 requests
+keras
+graphviz

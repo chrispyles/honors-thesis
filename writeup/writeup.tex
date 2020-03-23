@@ -24,32 +24,36 @@
 
 \maketitle
 
+\section*{Abstract}
+
+
+
 \section{Introduction}
 
 
 
 \section{Data}
 
-The data used in this project is provided by \href{https://api.tmdb.org}{The Movie Database's API (TMDb)}. The data queried covers movies released in 2018 in English, spanning many genres: 
+The data used in this project is from \href{https://api.tmdb.org}{The Movie Database's (TMDb) API}. The data queried covers movies released in 2018 in English, spanning many genres: 
 
 \begin{itemize}
-\item Action ($n=245$)
+\item Action ($n=242$)
 \item Adventure ($n=134$)
-\item Animation ($n=117$)
-\item Comedy ($n=569$)
-\item Crime ($n=155$)
-\item Documentary ($n=464$)
-\item Drama ($n=764$)
-\item Family ($n=148$)
-\item Fantasy ($n=144$)
-\item History ($n=67$)
-\item Horror ($n=446$)
-\item Music ($n=126$)
-\item Mystery ($n=144$)
+\item Animation ($n=116$)
+\item Comedy ($n=566$)
+\item Crime ($n=154$)
+\item Documentary ($n=432$)
+\item Drama ($n=746$)
+\item Family ($n=147$)
+\item Fantasy ($n=143$)
+\item History ($n=66$)
+\item Horror ($n=438$)
+\item Music ($n=119$)
+\item Mystery ($n=143$)
 \item Romance ($n=222$)
 \item Science Fiction ($n=188$)
-\item TV Movie ($n=197$)
-\item Thriller ($n=511$)
+\item TV Movie ($n=194$)
+\item Thriller ($n=506$)
 \item War ($n=29$)
 \item Western ($n=31$)
 \end{itemize}
@@ -140,11 +144,200 @@ Before modeling, a cursory analysis of the data yielded the interesting relation
 As the first part of this analysis, the statistical significance of the presence of different words in synopses is studied using hypothesis testing. The null hypothesis for this test is that the presence of a word does not affect the average rating, and the alternative is that the presence of the word results in an increase in rating. The test statistic used here is the aboslute difference between the mean rating of movies where the word is present in the synopsis and the movies where it is not. Under the null hypothesis, the truth value of a word being present in a synopsis is shuffled for each observation, so that same number of ``present''s is obtained. Then, the test statistic is computed and the p-value is calculated as the proportion of the test statistic values that are greater than or equal to the observed value for that word.
 
 \subsection{Classification without Posters}
+\label{section:class_no_posters}
 
-The next step in the analysis is to attempt classification using the features in \texttt{movies} alone (i.e. without the posters). 
+The next step in the analysis is to attempt classification using the features in \texttt{movies} alone (i.e. without the posters). In this section, several different classification methods are tested, including a ridge classifier, a decision tree classifier, a support vector classifier (SVC), and a $k$-nearest neighbors (kNN) classifier. Each of these models is trained on training data from \texttt{movies} and evaluated using different error metrics on testing data from \texttt{movies}. Three different error metrics are used to evaluate each classifier: classification accuracy, root-mean-squared prediction error (RMSE), and mean absolute error (MAE). The last two, normally regression metrics, are used because the ratings are derived from continuous variables, and a classifier that classifies a movie closer to its rating than another is more accurate, and hit-miss accuracy does not account for this.
+
+In order to select features, multiple methods are used and compared. The $k$ best features based on chi-squared statistics, ANOVA F-value, and mutual information are each selected and compared using tuned hyperparameters for each model. $k$ is also tuned using hyperparameter selection.
+
+5-fold cross-validation (CV) is used to tune hyperparameters. The hyperparameters being tuned for each model are:
+\begin{itemize}
+\item ridge classifier: $\alpha$, the regularization strength
+\item SVC: $C$, the regularization parameter (analagous to $\alpha^{-1}$ from the ridge classifier)
+\item kNN classifier: the number of neighbors
+\end{itemize}
+Hyperparameters are tuned individually for sets of features chosen by the different methods of feature selection described above. The model with the best CV error is chosen and trained on the training set using the corresponding features and evaluated using testing error.
+
+\subsection{Classifying Movie Posters}
+\label{section:class_posters}
+
+In this portion, movie posters, stored as 3-D arrays, are used as inputs to conlutional neural networks (CNNs) in order to classify the movie by rating. This section does not involve any features in \texttt{movies}. CNNs are trained on the 4-D array of all images and the classes encoded as dummy variables. The networks are compiled using categorical cross-entropy loss and the Adam optimization algorithm. They are evaluated as in \S \ref{section:class_no_posters}, using classification accuracy, RMSE, and MAE with 5-fold CV to determine the best network structure. The model with the best metrics is trained on the entire training set and evaluated on the test set.
+
+\subsection{Classification with All Data}
+
+In the final portion of this analysis, all available data is brought together to build a final classifier. Combinations of models from \S \ref{section:class_no_posters} and \S \ref{section:class_posters} are combined to classify ratings, including by using poster classifier predictions as features in a final model incorporating data from \texttt{movies}. As before, models here are evaluated using accuracy, RMSE, and MAE and compared with 5-fold CV, before training and testing a final model on the test set.
 
 \section{Results}
 
 \subsection{Words in Synopses}
+
+This analysis found that there were 110 words that were statistically significant, summarized in Table \ref{table:word_p_values} with their p-values. Each of these words was added as a feature to \texttt{movies} as dummy variables with 0-1 values indicating the presence of that word in the synopsis, resulting in the data points in \texttt{movies} becoming 149-dimensional.
+
+\begin{table}
+\begin{tabular}[t]{l|l}
+\textbf{word}        & \textbf{p-value} \\ \hline
+this        & 0.001    \\
+after       & 0.006    \\
+known       & 0.003    \\
+side        & 0.0      \\
+killer      & 0.001    \\
+business    & 0.019    \\
+seem        & 0.009    \\
+follows     & 0.028    \\
+become      & 0.03     \\
+house       & 0.003    \\
+meets       & 0.0      \\
+aunt        & 0.017    \\
+each        & 0.012    \\
+making      & 0.001    \\
+place       & 0.002    \\
+only        & 0.0      \\
+foot        & 0.009    \\
+perform     & 0.0      \\
+lore        & 0.036    \\
+give        & 0.038    \\
+found       & 0.031    \\
+front       & 0.047    \\
+women       & 0.024    \\
+ours        & 0.035    \\
+behind      & 0.001    \\
+kill        & 0.004    \\
+attempt     & 0.01     \\
+disco       & 0.003    \\
+mysterious  & 0.004    \\
+king        & 0.015    \\
+less        & 0.013    \\
+turn        & 0.049    \\
+begin       & 0.001    \\
+years       & 0.002    \\
+range       & 0.001    \\
+discover    & 0.011    \\
+mall        & 0.04     \\
+\end{tabular}
+\begin{tabular}[t]{l|l}
+\textbf{word}        & \textbf{p-value} \\ \hline
+through     & 0.005    \\
+take        & 0.012    \\
+group       & 0.0      \\
+film        & 0.004    \\
+gain        & 0.041    \\
+great       & 0.0      \\
+trip        & 0.02     \\
+care        & 0.009    \\
+couple      & 0.049    \\
+even        & 0.042    \\
+party       & 0.027    \\
+cove        & 0.003    \\
+down        & 0.004    \\
+dire        & 0.0      \\
+story       & 0.01     \\
+father      & 0.04     \\
+disc        & 0.009    \\
+under       & 0.047    \\
+ller        & 0.003    \\
+busi        & 0.008    \\
+direct      & 0.007    \\
+light       & 0.002    \\
+does        & 0.018    \\
+dangerous   & 0.002    \\
+break       & 0.007    \\
+evil        & 0.005    \\
+host        & 0.002    \\
+survive     & 0.001    \\
+meet        & 0.037    \\
+realize     & 0.03     \\
+murder      & 0.0      \\
+college     & 0.014    \\
+documentary & 0.005    \\
+self        & 0.02     \\
+super       & 0.042    \\
+across      & 0.006    \\
+cover       & 0.026    \\
+\end{tabular}
+\begin{tabular}[t]{l|l}
+\textbf{word}        & \textbf{p-value} \\ \hline
+rough       & 0.004    \\
+cross       & 0.002    \\
+hard        & 0.001    \\
+brother     & 0.037    \\
+childhood   & 0.001    \\
+small       & 0.018    \\
+director    & 0.02     \\
+feat        & 0.0      \\
+danger      & 0.005    \\
+dang        & 0.002    \\
+between     & 0.003    \\
+mean        & 0.003    \\
+christmas   & 0.016    \\
+year        & 0.018    \\
+press       & 0.046    \\
+ross        & 0.005    \\
+dark        & 0.001    \\
+follow      & 0.0      \\
+document    & 0.002    \\
+first       & 0.0      \\
+brea        & 0.009    \\
+anger       & 0.001    \\
+strange     & 0.005    \\
+hunt        & 0.002    \\
+secret      & 0.0      \\
+takes       & 0.004    \\
+fall        & 0.014    \\
+music       & 0.0      \\
+which       & 0.029    \\
+soon        & 0.002    \\
+know        & 0.017    \\
+them        & 0.0      \\
+wing        & 0.032    \\
+comedy      & 0.0      \\
+form        & 0.001    \\
+test        & 0.02     \\
+\end{tabular}
+\caption{\label{table:word_p_values}Words with statistically significant presences and corresponding p-values.}
+\end{table}
+
+\subsection{Classification without Posters}
+\label{section:class_no_posters_results}
+
+After the first round of hyperparameter search, the ridge classifier performed best with $\alpha=0$, the support vector classifier with $C=100$, and the kNN classifier with 1 neighbor. The decision tree classifier had no hyperparameters of interest. The results of feature selection and tuning are provided in Table \ref{table:class_no_poster_results}. Table \ref{table:class_no_poster_test_results} details the testing MAE and RMSE for each model and feature selection scheme. The hyperparameters used in these models are:
+\begin{itemize}
+\item ridge: $\alpha=0$
+\item SVC: $C=100$
+\item kNN: 1 neighbor
+\end{itemize}
+The results show that a support vector classifier with $C=100$ and feature selection using mutual information is the best classifier, with an MAE of 0.87154 and an RMSE of 1.72500. The predictions of this classifier are depicted in Figure \ref{fig:no_poster_test_results}.
+
+\begin{table}[]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l|ll|ll|l|ll}
+\textbf{Classifier $\rightarrow$} & \textbf{Ridge} & \textbf{} & \textbf{SVC} & \textbf{} & \textbf{Decision Tree} & \textbf{kNN} & \textbf{} \\
+\textbf{Feature Selection Scheme $\downarrow$} & \textbf{$\alpha$} & \textbf{MAE} & \textbf{$C$} & \textbf{MAE} & \textbf{MAE} & \textbf{neighbors} & \textbf{MAE} \\ \hline
+\textbf{No Selection} & 0 & 1.19740 & 100 & 0 & 0 & 1 & 0 \\
+\textbf{Chi-Squared Statistics} & 0.1 & 1.40022 & 10 & 0 & 0 & 1 & 0 \\
+\textbf{ANOVA F-value} & 0 & 1.40130 & 100 & 1.15998 & 0.27983 & 1 & 0.32484 \\
+\textbf{Mutual Information} & 0 & 1.41811 & 10 & 0 & 0 & 1 & 0
+\end{tabular}%
+}
+\caption{\label{table:class_no_poster_results}Results of feature selection and hyperparameter tuning without posters.}
+\end{table}
+
+\begin{table}[]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l|ll|ll|ll|ll}
+\textbf{Classifier $\rightarrow$} & \textbf{Ridge} & \textbf{} & \textbf{SVC} & \textbf{} & \textbf{Decision Tree} & \textbf{} & \textbf{kNN} & \textbf{} \\
+\textbf{Feature Selection Scheme $\downarrow$} & \textbf{MAE} & \textbf{RMSE} & \textbf{MAE} & \textbf{RMSE} & \textbf{MAE} & \textbf{RMSE} & \textbf{MAE} & \textbf{RMSE} \\ \hline
+\textbf{No Selection} & 1.46016 & 2.14438 & 0.95772 & 1.80289 & 0.95610 & 1.94309 & 1.07805 & 1.94518 \\
+\textbf{Chi-Squared Statistics} & 1.36260 & 1.98449 & 0.90569 & 1.76460 & 1.01789 & 2.01377 & 1.07967 & 1.96638 \\
+\textbf{ANOVA F-value} & 1.38537 & 2.03386 & 1.43577 & 2.15836 & 1.14472 & 2.15271 & 1.18699 & 2.20421 \\
+\textbf{Mutual Information} & 1.46992 & 2.04661 & 0.87154 & 1.72500 & 1.03089 & 1.96886 & 1.08618 & 1.96804
+\end{tabular}%
+}
+\caption{\label{table:class_no_poster_test_results}Classifier testing errors on classification without posters.}
+\end{table}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{no_poster_test_results}
+\caption{\label{fig:no_poster_test_results}Results of classification without posters with $U(-0.2, 0.2)$ jittering on both axes.}
+\end{figure}
 
 \end{document}
