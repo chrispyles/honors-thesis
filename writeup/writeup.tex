@@ -9,6 +9,8 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{hyperref}
+\usepackage{float}
+% \usepackage[cache=false]{minted}
 
 %SetFonts
 
@@ -83,7 +85,7 @@ Cleaning the data for this project, after dropping missing values, involved roun
 
 The \texttt{vote\_average} column ($\mu = 6.628$, $\sigma = 1.939$) describes the variable of interest, representing the average rating across votes for a single movie. In this analysis, this column will be transformed from a continuous variable into an ordinal variable with possible values 1 to 10 by rounding the vote average to a whole number. After rounding, the distribution of ratings is provided in Figure \ref{fig:rating_barplot}.
 
-\begin{figure}
+\begin{figure}[H]
 \includegraphics[width=\textwidth]{rating_barplot}
 \caption{\label{fig:rating_barplot}Number of movies for each value of ratings, rounded from \texttt{vote\_average}.}
 \end{figure}
@@ -92,7 +94,7 @@ To clean the movie synopses, all letters were transformed to lowercas, and any c
 
 The \texttt{genre\_ids} column is a list of genre IDs encoded as a string, so to start any empty lists, \texttt{"[]"}, were replaced with \texttt{NaN}. Then, the string were split into Python lists of IDs, and were joined with the \texttt{genres} table, so that \texttt{movies} had a column \texttt{genres} where each value is a list of genres for that movie. Figure \ref{fig:genre_barplot} shows the breakdown of movies by genre.
 
-\begin{figure}
+\begin{figure}[H]
 \includegraphics[width=\textwidth]{genre_barplot}
 \caption{\label{fig:genre_barplot}Number of movies in each genre.}
 \end{figure}
@@ -107,21 +109,21 @@ Before modeling, a cursory analysis of the data yielded the interesting relation
 
 \item Figure \ref{fig:vote_count_by_rating} shows that vote count tends to increase logarithmically with rating until 8, after which it drops significantly. This demonstrates that having more votes tends to "bring down the curve."
 
-\begin{figure}
+\begin{figure}[H]
 \includegraphics[width=\textwidth]{vote_count_by_rating}
 \caption{\label{fig:vote_count_by_rating}Average vote count by rating.}
 \end{figure}
 
 \item There are significantly more non-adult movies than adult movies, as demonstrated in Figure \ref{fig:ratings_by_adult}. It is interesting to note that adult movies have a double-peak distribution with far less spread than do the non-adult movies.
 
-\begin{figure}
+\begin{figure}[H]
 \includegraphics[width=\textwidth]{ratings_by_adult}
 \caption{\label{fig:ratings_by_adult}Number of ratings by adult/non-adult.}
 \end{figure}
 
 \item Figure \ref{fig:ratings_by_genre} shows the distribution of ratings for each genre.
 
-\begin{figure}
+\begin{figure}[H]
 \includegraphics[height=0.9\textheight]{ratings_by_genre}
 \caption{\label{fig:ratings_by_genre}Distribution of ratings by genre.}
 \end{figure}
@@ -130,7 +132,7 @@ Before modeling, a cursory analysis of the data yielded the interesting relation
 
 \item The distributions of ratings by release date day of week appear to be different in skew (Figure \ref{fig:ratings_dow}), indicating that this may be an important feature. No discernible relationship is seen between rating and day of month or month of release.
 
-\begin{figure}
+\begin{figure}[H]
 \includegraphics[width=\textwidth]{ratings_dow}
 \caption{\label{fig:ratings_dow}Distribution of ratings by day of week of release.}
 \end{figure}
@@ -170,12 +172,13 @@ In the final portion of this analysis, all available data is brought together to
 \section{Results}
 
 \subsection{Words in Synopses}
+\label{section:words_results}
 
-This analysis found that there were 110 words that were statistically significant, summarized in Table \ref{table:word_p_values} with their p-values. Each of these words was added as a feature to \texttt{movies} as dummy variables with 0-1 values indicating the presence of that word in the synopsis, resulting in the data points in \texttt{movies} becoming 149-dimensional.
+This analysis found that there were 110 words that were statistically significant, summarized in Table \ref{table:word_p_values} with their p-values. Each of these words was added as a feature to \texttt{movies} as dummy variables with 0-1 values indicating the presence of that word in the synopsis, resulting in the data points in \texttt{movies} becoming 141-dimensional.
 
 \begin{table}
 \begin{tabular}[t]{l|l}
-\textbf{word}        & \textbf{p-value} \\ \hline
+\textbf{Word}        & \textbf{p-value} \\ \hline
 this        & 0.001    \\
 after       & 0.006    \\
 known       & 0.003    \\
@@ -215,7 +218,7 @@ discover    & 0.011    \\
 mall        & 0.04     \\
 \end{tabular}
 \begin{tabular}[t]{l|l}
-\textbf{word}        & \textbf{p-value} \\ \hline
+\textbf{Word}        & \textbf{p-value} \\ \hline
 through     & 0.005    \\
 take        & 0.012    \\
 group       & 0.0      \\
@@ -255,7 +258,7 @@ across      & 0.006    \\
 cover       & 0.026    \\
 \end{tabular}
 \begin{tabular}[t]{l|l}
-\textbf{word}        & \textbf{p-value} \\ \hline
+\textbf{Word}        & \textbf{p-value} \\ \hline
 rough       & 0.004    \\
 cross       & 0.002    \\
 hard        & 0.001    \\
@@ -305,9 +308,9 @@ After the first round of hyperparameter search, the ridge classifier performed b
 \item SVC: $C=100$
 \item kNN: 1 neighbor
 \end{itemize}
-The results show that a support vector classifier with $C=100$ and feature selection using mutual information is the best classifier, with an MAE of 0.87154 and an RMSE of 1.72500. The predictions of this classifier are depicted in Figure \ref{fig:no_poster_test_results}.
+The results show that a support vector classifier with $C=100$ and feature selection using mutual information is the best classifier, with an MAE of 0.87154 and an RMSE of 1.72500. The predictions of this classifier are depicted in Figure \ref{fig:no_poster_test_results}. This feature selection scheme chose 10 features: \texttt{popularity}, \texttt{vote\_count}, \texttt{Horror}, \texttt{Music}, \texttt{Thriller}, \texttt{overview\_len}, \texttt{day}, \texttt{take}, \texttt{direct}, and \texttt{evil}. The last three features correspond to the presence of words as described in \S \ref{section:words_results}.
 
-\begin{table}[]
+\begin{table}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{l|ll|ll|l|ll}
 \textbf{Classifier $\rightarrow$} & \textbf{Ridge} & \textbf{} & \textbf{SVC} & \textbf{} & \textbf{Decision Tree} & \textbf{kNN} & \textbf{} \\
@@ -321,7 +324,7 @@ The results show that a support vector classifier with $C=100$ and feature selec
 \caption{\label{table:class_no_poster_results}Results of feature selection and hyperparameter tuning without posters.}
 \end{table}
 
-\begin{table}[]
+\begin{table}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{l|ll|ll|ll|ll}
 \textbf{Classifier $\rightarrow$} & \textbf{Ridge} & \textbf{} & \textbf{SVC} & \textbf{} & \textbf{Decision Tree} & \textbf{} & \textbf{kNN} & \textbf{} \\
@@ -335,9 +338,51 @@ The results show that a support vector classifier with $C=100$ and feature selec
 \caption{\label{table:class_no_poster_test_results}Classifier testing errors on classification without posters.}
 \end{table}
 
-\begin{figure}
+\begin{figure}[H]
 \includegraphics[width=\textwidth]{no_poster_test_results}
 \caption{\label{fig:no_poster_test_results}Results of classification without posters with $U(-0.2, 0.2)$ jittering on both axes.}
+\end{figure}
+
+\subsection{Classifying Movie Posters}
+
+This section created multiple neural networks, both convolutional and otherwise. The non-convolutional neural networks were trained on the flattened image arrays and contained different numbers dense hidden layers. Both softmax and sigmoid activation functions for the final layer were considered. The convolutional NNs were trained on the 3-dimensional image arrays, which were then flattened and run through non-convolutional dense layers. All NNs in this section use the Adam optimizer and categorical cross-entropy loss.
+
+Several neural network models analyzes in this section predicted all fours or all zeros, including one of the convolutional NNs, defined in \texttt{keras} as below: \\
+\texttt{%
+model = Sequential()  \\
+model.add(Conv2D(32, (2, 2), input\_shape=input\_shape))  \\
+model.add(Activation('relu'))  \\
+model.add(MaxPooling2D(pool\_size=(2, 2)))  \\
+\\
+model.add(Conv2D(32, (2, 2)))  \\
+model.add(Activation('relu'))  \\
+model.add(MaxPooling2D(pool\_size=(2, 2)))  \\
+\\
+model.add(Conv2D(64, (2, 2)))  \\
+model.add(Activation('relu'))  \\
+model.add(MaxPooling2D(pool\_size=(2, 2)))  \\
+\\
+model.add(Flatten())  \\
+model.add(Dense(64))  \\
+model.add(Activation('relu'))  \\
+model.add(Dropout(0.5))  \\
+model.add(Dense(dummy\_y.shape[1]))  \\
+model.add(Activation('sigmoid')) \\
+	\\
+model.compile(loss="categorical\_crossentropy", optimizer="adam", \\
+metrics=["mae", "mse"]) \\
+} The testing prediction plot for this CNN is provided in Figure \ref{fig:cnn_all_fours}.
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{cnn_all_fours}
+\caption{\label{fig:cnn_all_fours}Results of poster CNN with $U(-0.2, 0.2)$ jittering on both axes.}
+\end{figure}
+
+Another non-convolutional network that was tested, consisting of a dense input layer with 8 nodes, a dropout layer with a rate of 0.25, and a dense output layer with a sigmoid activation function predicted almost all zeros, as shown in Figure \ref{fig:nn_most_zeros}.
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{nn_most_zeros}
+\caption{\label{fig:nn_most_zeros}Results of poster NN with $U(-0.2, 0.2)$ jittering on both axes.}
 \end{figure}
 
 \end{document}
