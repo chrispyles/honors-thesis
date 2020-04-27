@@ -10,6 +10,8 @@
 \usepackage{amsmath}
 \usepackage{hyperref}
 \usepackage{float}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
 \usepackage[toc,page]{appendix}
 % \usepackage[cache=false]{minted}
 
@@ -43,6 +45,16 @@
 \newpage
 
 \section{Introduction}
+
+The ability to predict the rating of a movie before its release would be a great asset to production companies. Ratings are generally correlated with the revenue made by a movie, as people tend to base their decisions of whether or not to see a movie on the reviews they read and the general attitude toward the movie. EXPAND
+
+Various techniques have been applied to the question of predicting movie ratings based on different types of data. Oghina et. al. \cite{oghina_predicting_2012} applied prediction algorithms to data from the Internet Movie Database (IMDb) and attempted to predict ratings based on social media. Their analysis is based on textual data from sources like YouTube and Twitter, which they used to extract other textual features that were used in the final predictive model. Navarathna et. al. \cite{navarathna_predicting_2014} consiconsider a different model of movie rating prediction based on observations of moviegoers' faces and body language during a viewing experience. Other implementations of this problem include the problem of automatically predicting specific users' ratings, as discussed in Marović et. al. \cite{marovic_automatic_2011}, who use machine learning methods to predict these ratings in service of a recommendation algorithm.
+
+The paper by Kudagamage et. al. \cite{kudagamage_data_2018} discussed an approach to the prediction of movies' success based in data mining techniques. This analysis looks at various geometric properties of its data, including spatial clustering, and how this relates to the success of a movie. Instead of predicting movies directly, movies are partitioned into four clusters representing most successful, successful, unsuccessful, and least successful movies. 
+
+Other implementations of this problem include the problem of automatically predicting specific users' ratings, as discussed in Marović et. al. \cite{marovic_automatic_2011}, who use machine learning methods to predict these ratings in service of a recommendation algorithm.
+
+A natural extension of this research is demonstrated in Diao et. al. \cite{diao_jointly_2014}, which describes how ratings and review sentiments can be used to model movie recommendations. This model is again trained on IMDb data and thinks about how data scraped from the site on ratings and reviews can be used to build a recommendation algorithm. The ability to predict the ratings for a movie is a precursor to analyzing the market for the movie using such recommendation models, for example to predict how many streaming service users might watch this movie based on its predicted rating. 
 
 \newpage
 
@@ -321,9 +333,15 @@ Several non-convolution neural networks were tested, including 11 non-convolutio
 1024 & 1.9250671607225567 \\
 \end{tabular}\end{center}
 \caption{\label{table:fcnn_maes}MAEs for different numbers of hidden units in non-convolutional fully-connected neural networks with 1 hidden layer.}
-\end{table}
+\end{table} 
 
 % \begin{appendices}
+\newpage
+
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{plain} % We choose the "plain" reference style
+\bibliography{references.bib}
+
 \newpage
 
 \appendix

@@ -11,3 +11,6 @@ __pycache__
 notebooks/config.py
 data/private
 config.py
+*.bbl
+*.blg
+*.toc

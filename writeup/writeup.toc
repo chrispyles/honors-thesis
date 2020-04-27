@@ -1,3 +1,4 @@
+\babel@toc {english}{}
 \contentsline {section}{Abstract}{3}{section*.1}%
 \contentsline {section}{\numberline {1}Introduction}{4}{section.1}%
 \contentsline {section}{\numberline {2}Data}{5}{section.2}%
@@ -14,4 +15,5 @@
 \contentsline {subsection}{\numberline {4.2}Principal Components Analysis}{14}{subsection.4.2}%
 \contentsline {subsection}{\numberline {4.3}Classification without Posters}{16}{subsection.4.3}%
 \contentsline {subsection}{\numberline {4.4}Classifying Movie Posters}{18}{subsection.4.4}%
-\contentsline {section}{\numberline {A}Appendix: Word Signficiance Table}{20}{appendix.A}%
+\contentsline {section}{References}{20}{table.4}%
+\contentsline {section}{\numberline {A}Appendix: Word Signficiance Table}{21}{appendix.A}%

@@ -1,0 +1,71 @@
+
+@inproceedings{oghina_predicting_2012,
+	address = {Berlin, Heidelberg},
+	series = {Lecture {Notes} in {Computer} {Science}},
+	title = {Predicting {IMDB} {Movie} {Ratings} {Using} {Social} {Media}},
+	isbn = {978-3-642-28997-2},
+	doi = {10.1007/978-3-642-28997-2_51},
+	abstract = {We predict IMDb movie ratings and consider two sets of features: surface and textual features. For the latter, we assume that no social media signal is isolated and use data from multiple channels that are linked to a particular movie, such as tweets from Twitter and comments from YouTube. We extract textual features from each channel to use in our prediction model and we explore whether data from either of these channels can help to extract a better set of textual feature for prediction. Our best performing model is able to rate movies very close to the observed values.},
+	language = {en},
+	booktitle = {Advances in {Information} {Retrieval}},
+	publisher = {Springer},
+	author = {Oghina, Andrei and Breuss, Mathias and Tsagkias, Manos and de Rijke, Maarten},
+	editor = {Baeza-Yates, Ricardo and de Vries, Arjen P. and Zaragoza, Hugo and Cambazoglu, B. Barla and Murdock, Vanessa and Lempel, Ronny and Silvestri, Fabrizio},
+	year = {2012},
+	keywords = {Activity Indicator, Attribute Selection, Mean Absolute Error, Social Medium, Textual Feature},
+	pages = {503--507}
+}
+
+@inproceedings{kudagamage_data_2018,
+	title = {Data {Mining} {Approach} to {Analysis} and {Prediction} of {Movie} {Success}},
+	abstract = {Data mining is a very efficient approach to uncover information which will both confirm or disprove common assumptions about movies, and it also allows us to predict the success or failure of a future movie using the known information about the particular movie before its release. The main aim of this study is to analyze data mining approaches to explore the attributes affecting the success or failure of a movie. Each and every data mining algorithm provides separate prediction accuracy details. This study integrates four data mining algorithms (Decision Trees, Naïve Bayes, Support Vector Machine, Neural Networks) and an Ensemble approach in order to address the intriguing problem of the movie success prediction and also demonstrates the correlation between success or failure of a movie and different attributes of movies like Opening weekend Gross, Sequel, Theaters, Budget, Genre, Distributors, Country, IMDB Rating, MPAA Rating, Run Time etc. The prediction performance of these models has been evaluated using Accuracy, Precision, Recall, F-Measure, MCC, ROC Area, PRC Area, Root Mean Squared Error (RMSE) and Mean Absolute Error (MAE) etc. Further, a spatial clustering technique called the Associated Keyword Space (ASKS) was applied for this study, which is effective for noisy data and projected clustering result from a three-dimensional(3D) sphere to a two dimensional(2D) spherical surface for 2D visualization. Similarities between movies were calculated using the Cosine Similarity and these affinity values were used for this clustering model. Movies were categorized under the success or failure of movies by clustering them into four clusters as Most Successful Movies, Successful Movies, Unsuccessful Movies and Least Successful movies. Experimental results show the most effective attributes towards the success or failure of a movie out of these movie attributes considered in this study. Moviemakers can use these results to identify which movie attributes are the most effective and can consider them for the success of their future movie productions. Also, using the Correlation Coefficient, a mathematical model that can be used to predict the movie's success or failure is proposed in this study.},
+	author = {Kudagamage, Upeksha and Kumara, Banage and Baduraliya, Chaminda},
+	month = aug,
+	year = {2018},
+	file = {Full Text PDF:/Users/chrispyles/Zotero/storage/JAJBWXEG/Kudagamage et al. - 2018 - Data Mining Approach to Analysis and Prediction of.pdf:application/pdf}
+}
+
+@inproceedings{diao_jointly_2014,
+	address = {New York, New York, USA},
+	series = {{KDD} '14},
+	title = {Jointly modeling aspects, ratings and sentiments for movie recommendation ({JMARS})},
+	isbn = {978-1-4503-2956-9},
+	url = {https://doi.org/10.1145/2623330.2623758},
+	doi = {10.1145/2623330.2623758},
+	abstract = {Recommendation and review sites offer a wealth of information beyond ratings. For instance, on IMDb users leave reviews, commenting on different aspects of a movie (e.g. actors, plot, visual effects), and expressing their sentiments (positive or negative) on these aspects in their reviews. This suggests that uncovering aspects and sentiments will allow us to gain a better understanding of users, movies, and the process involved in generating ratings. The ability to answer questions such as "Does this user care more about the plot or about the special effects?" or "What is the quality of the movie in terms of acting?" helps us to understand why certain ratings are generated. This can be used to provide more meaningful recommendations. In this work we propose a probabilistic model based on collaborative filtering and topic modeling. It allows us to capture the interest distribution of users and the content distribution for movies; it provides a link between interest and relevance on a per-aspect basis and it allows us to differentiate between positive and negative sentiments on a per-aspect basis. Unlike prior work our approach is entirely unsupervised and does not require knowledge of the aspect specific ratings or genres for inference. We evaluate our model on a live copy crawled from IMDb. Our model offers superior performance by joint modeling. Moreover, we are able to address the cold start problem -- by utilizing the information inherent in reviews our model demonstrates improvement for new users and movies.},
+	urldate = {2020-04-27},
+	booktitle = {Proceedings of the 20th {ACM} {SIGKDD} international conference on {Knowledge} discovery and data mining},
+	publisher = {Association for Computing Machinery},
+	author = {Diao, Qiming and Qiu, Minghui and Wu, Chao-Yuan and Smola, Alexander J. and Jiang, Jing and Wang, Chong},
+	month = aug,
+	year = {2014},
+	keywords = {collaborative filtering, integrated modeling, sentiment analysis, topic models},
+	pages = {193--202},
+	file = {Full Text PDF:/Users/chrispyles/Zotero/storage/WF35YUSA/Diao et al. - 2014 - Jointly modeling aspects, ratings and sentiments f.pdf:application/pdf}
+}
+
+@inproceedings{navarathna_predicting_2014,
+	title = {Predicting movie ratings from audience behaviors},
+	doi = {10.1109/WACV.2014.6835987},
+	abstract = {We propose a method of representing audience behavior through facial and body motions from a single video stream, and use these features to predict the rating for feature-length movies. This is a very challenging problem as: i) the movie viewing environment is dark and contains views of people at different scales and viewpoints; ii) the duration of feature-length movies is long (80-120 mins) so tracking people uninterrupted for this length of time is still an unsolved problem; and iii) expressions and motions of audience members are subtle, short and sparse making labeling of activities unreliable. To circumvent these issues, we use an infrared illuminated test-bed to obtain a visually uniform input. We then utilize motion-history features which capture the subtle movements of a person within a pre-defined volume, and then form a group representation of the audience by a histogram of pair-wise correlations over a small-window of time. Using this group representation, we learn our movie rating classifier from crowd-sourced ratings collected by rottentomatoes.com and show our prediction capability on audiences from 30 movies across 250 subjects ({\textgreater} 50 hrs).},
+	booktitle = {{IEEE} {Winter} {Conference} on {Applications} of {Computer} {Vision}},
+	author = {Navarathna, Rajitha and Lucey, Patrick and Carr, Peter and Carter, Elizabeth and Sridharan, Sridha and Matthews, Iain},
+	month = mar,
+	year = {2014},
+	note = {ISSN: 1550-5790},
+	keywords = {audience behaviors, audience group representation, body motion, Cameras, correlation methods, crowd-sourced ratings, Face, facial motion, feature extraction, feature-length movies, image motion analysis, Motion pictures, motion-history features, movie rating classifier, movie rating prediction, Optical imaging, pair-wise correlation histogram, Three-dimensional displays, Tracking, video signal processing, video stream, video streaming, Watches},
+	pages = {1058--1065},
+	file = {IEEE Xplore Abstract Record:/Users/chrispyles/Zotero/storage/KNCFJIU6/6835987.html:text/html;IEEE Xplore Full Text PDF:/Users/chrispyles/Zotero/storage/RFU2WL5G/Navarathna et al. - 2014 - Predicting movie ratings from audience behaviors.pdf:application/pdf}
+}
+
+@inproceedings{marovic_automatic_2011,
+	title = {Automatic movie ratings prediction using machine learning},
+	abstract = {Recommendation systems that model users and their interests are often used to improve various user services. Such systems are usually based on automatic prediction of user ratings of the items provided by the service. This paper presents an overview of some of the methods for automatic ratings prediction in the domain of movie ratings. The chosen methods are based on various approaches described in related papers. During the prediction process both the user and item features can be used. For the purpose of this paper, data was gathered from the publicly available movie database IMDb. The paper encompasses the implementation of the chosen methods and their evaluation using the gathered data. The results show an improvement in comparison to the chosen baseline methods.},
+	booktitle = {2011 {Proceedings} of the 34th {International} {Convention} {MIPRO}},
+	author = {Marović, Mladen and Mihoković, Marko and Mikša, Mladen and Pribil, Siniša and Tus, Alan},
+	month = may,
+	year = {2011},
+	keywords = {Artificial neural networks, automatic movie rating prediction process, database management systems, humanities, learning (artificial intelligence), machine learning, Mathematical model, Matrix decomposition, Motion pictures, movie database IMD, Prediction algorithms, recommendation system, recommender systems, Regression tree analysis, service industries, Training, user ratings, user service},
+	pages = {1640--1645},
+	file = {IEEE Xplore Abstract Record:/Users/chrispyles/Zotero/storage/GB73ZA8X/5967324.html:text/html;IEEE Xplore Full Text PDF:/Users/chrispyles/Zotero/storage/QLRJFDGE/Marović et al. - 2011 - Automatic movie ratings prediction using machine l.pdf:application/pdf}
+}
