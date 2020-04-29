@@ -15,6 +15,9 @@
 \usepackage[toc,page]{appendix}
 % \usepackage[cache=false]{minted}
 
+\usepackage{setspace}
+\doublespace
+
 % Move page number down
 % \setlength{\footskip}{0.001cm}
 % \pagenumbering{gobble}
@@ -25,7 +28,7 @@
 
 
 \title{%
-	Movie Rating Prediction Using Artificial Neural Networks}
+	Predicting Movie Ratings with Movie Posters}
 \author{Christopher Pyles}
 \date{May 5, 2020}							% Activate to display a given date or no date
 
@@ -33,14 +36,11 @@
 
 \maketitle
 
+\section*{Abstract}
+
 \newpage
 
 \tableofcontents
-
-\newpage
-
-\addcontentsline{toc}{section}{Abstract}
-\section*{Abstract}
 
 \newpage
 
@@ -55,8 +55,6 @@ The paper by Kudagamage et. al. \cite{kudagamage_data_2018} discussed an approac
 Other implementations of this problem include the problem of automatically predicting specific users' ratings, as discussed in Marović et. al. \cite{marovic_automatic_2011}, who use machine learning methods to predict these ratings in service of a recommendation algorithm.
 
 A natural extension of this research is demonstrated in Diao et. al. \cite{diao_jointly_2014}, which describes how ratings and review sentiments can be used to model movie recommendations. This model is again trained on IMDb data and thinks about how data scraped from the site on ratings and reviews can be used to build a recommendation algorithm. The ability to predict the ratings for a movie is a precursor to analyzing the market for the movie using such recommendation models, for example to predict how many streaming service users might watch this movie based on its predicted rating. 
-
-\newpage
 
 \section{Data}
 
@@ -196,10 +194,6 @@ Hyperparameters are tuned individually for sets of features chosen by the differ
 
 In this portion, movie posters, stored as 3-D arrays, are used as inputs to conlutional neural networks (CNNs) in order to classify the movie by rating. This section does not involve any features in \texttt{movies}. CNNs are trained on the 4-D array of all images and the classes encoded as dummy variables. The networks are compiled using categorical cross-entropy loss and the Adam optimization algorithm. They are evaluated as in \S \ref{section:class_no_posters}, using classification accuracy, RMSE, and MAE with 5-fold CV to determine the best network structure. The model with the best metrics is trained on the entire training set and evaluated on the test set.
 
-\subsection{Classification with All Data}
-
-In the final portion of this analysis, all available data is brought together to build a final classifier. Combinations of models from \S \ref{section:class_no_posters} and \S \ref{section:class_posters} are combined to classify ratings, including by using poster classifier predictions as features in a final model incorporating data from \texttt{movies}. As before, models here are evaluated using accuracy, RMSE, and MAE and compared with 5-fold CV, before training and testing a final model on the test set.
-
 \newpage
 
 \section{Results}
@@ -284,35 +278,35 @@ The results show that a support vector classifier with $C=100$ and feature selec
 
 This section created multiple neural networks, both convolutional and otherwise. The non-convolutional neural networks were trained on the flattened image arrays and contained different numbers dense hidden layers. Both softmax and sigmoid activation functions for the final layer were considered. The convolutional NNs were trained on the 3-dimensional image arrays, which were then flattened and run through non-convolutional dense layers. All NNs in this section use the Adam optimizer and categorical cross-entropy loss.
 
-Several neural network models analyzes in this section predicted all fours or all zeros, including one of the convolutional NNs, defined in \texttt{keras} as below: \\
-\texttt{%
-model = Sequential()  \\
-model.add(Conv2D(32, (2, 2), input\_shape=input\_shape))  \\
-model.add(Activation('relu'))  \\
-model.add(MaxPooling2D(pool\_size=(2, 2)))  \\
-\\
-model.add(Conv2D(32, (2, 2)))  \\
-model.add(Activation('relu'))  \\
-model.add(MaxPooling2D(pool\_size=(2, 2)))  \\
-\\
-model.add(Conv2D(64, (2, 2)))  \\
-model.add(Activation('relu'))  \\
-model.add(MaxPooling2D(pool\_size=(2, 2)))  \\
-\\
-model.add(Flatten())  \\
-model.add(Dense(64))  \\
-model.add(Activation('relu'))  \\
-model.add(Dropout(0.5))  \\
-model.add(Dense(dummy\_y.shape[1]))  \\
-model.add(Activation('sigmoid')) \\
-	\\
-model.compile(loss="categorical\_crossentropy", optimizer="adam", \\
-metrics=["mae", "mse"]) \\
-} The testing prediction plot for this CNN is provided in Figure \ref{fig:cnn_all_fours}.
+Some neural network models analyzed in this section predicted all fours or all zeros, including one of the convolutional NNs. Figure \ref{fig:cnn_all_fours_first_layer} shows the features picked out by the first convolutional layer of this network when predicting on the poster in Figure \ref{fig:isle_of_dogs_poster}.
 
 \begin{figure}%[H]
-\includegraphics[width=\textwidth]{cnn_all_fours}
-\caption{\label{fig:cnn_all_fours}Results of poster CNN with $U(-0.2, 0.2)$ jittering on both axes.}
+\includegraphics[width=\textwidth]{isle_of_dogs_poster}
+\caption{\label{fig:isle_of_dogs_poster}Original poster for picturing CNN layer features.}
+\end{figure}
+
+\begin{figure}%[H]
+\includegraphics[width=\textwidth]{cnn_all_fours_first_layer}
+\caption{\label{fig:cnn_all_fours_first_layer}All-fours CNN first layer features.}
+\end{figure}
+
+A better CNN trained in this section, summarized in Figure \ref{fig:better_cnn_summary}, predictions with an MAE of 1.96941 and an RMSE of 2.62073. The features learned by the input layer of this model are shown in Figure \ref{fig:better_cnn_first_layer}.
+
+\begin{figure}%[H]
+\includegraphics[width=\textwidth]{better_cnn_summary}
+\caption{\label{fig:better_cnn_summary}Better CNN model summary.}
+\end{figure}
+
+\begin{figure}%[H]
+\includegraphics[width=\textwidth]{better_cnn_first_layer}
+\caption{\label{fig:better_cnn_first_layer}Better CNN input layer features.}
+\end{figure}
+
+What is interesting to note is that the all-fours CNN learns a more diffuse representation and a wider variety of features in the model. Figure \ref{fig:cnn_all_fours_first_layer} highlights grays of different hues and some of the neurons highlight textual features in the image. Contrast this to Figure \ref{fig:better_cnn_first_layer}, which shows several edge detectors (the mostly-black frames) and only a few neurons that learn more textual features. None of the neurons in the better CNN appear to recognize different shades of gray. This indicates that perhaps edge detection is a better method of learning features for predicting movies. Lower layers of this CNN learned to detect different textures in addition to edges, as shown in the Figure \ref{fig:better_cnn_fifth_layer}.
+
+\begin{figure}%[H]
+\includegraphics[width=\textwidth]{better_cnn_fifth_layer}
+\caption{\label{fig:better_cnn_fifth_layer}Better CNN fifth layer features.}
 \end{figure}
 
 Several non-convolution neural networks were tested, including 11 non-convolutional fully-connected networks with 1 hidden layer trained over 100 epochs with batch size 16. The MAEs for these networks for different numbers of hidden units are provided in Table \ref{table:fcnn_maes}.
@@ -334,6 +328,12 @@ Several non-convolution neural networks were tested, including 11 non-convolutio
 \end{tabular}\end{center}
 \caption{\label{table:fcnn_maes}MAEs for different numbers of hidden units in non-convolutional fully-connected neural networks with 1 hidden layer.}
 \end{table} 
+
+The results found in this section support to main conclusions: that non-convultional neural networks trained on the flattened image appear to do better at classifying the movie posters, and that poster images are not necessarily good predictors of movie ratings.
+
+\section{Conclusions}
+
+
 
 % \begin{appendices}
 \newpage

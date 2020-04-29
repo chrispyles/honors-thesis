@@ -16,9 +16,12 @@ The data from this project is from the TMDb API, which I queried in the [`loadin
 
 There are a few notebooks in this project, all in the `notebooks` folder. The proper order for looking through them is listed below.
 
-1. `loading-data.ipynb`
-2. `data-cleaning-eda.ipynb`
-3. `linear-regression-model.ipynb`
+1. [loading-data.ipynb](loading-data.ipynb)
+2. [data-cleaning-eda.ipynb](data-cleaning-eda.ipynb)
+3. [pca.ipynb](pca.ipynb)
+4. [word-significance.ipynb](word-significance.ipynb)
+5. [linear-regression-model.ipynb](linear-regression-model.ipynb)
+6. [posters-classification.ipynb](posters-classification.ipynb)
 
 By reading the notebooks in this order, you will be able to follow the project. I recommend looking through this project on Binder (link above) because some of the notebooks have IPython widgets that make understanding the thought process far easier.
 
