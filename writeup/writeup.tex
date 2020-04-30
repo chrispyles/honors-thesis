@@ -38,6 +38,8 @@
 
 \section*{Abstract}
 
+The efficacy of using movie posters as predictors of movie ratings is concerned by training both fully-connected and convolutional neural networks on poster images from The Movie Database. To understand the value of these models compared to others, control models trained on other data about the movies, e.g. the synopsis and genre, are built and trained. Various feature engineering and selection techniques are employed on these control models, including A/B testing to create features from the synopses. Principal components analysis is performed on the finalized dataset to consider the possibility of dimensionality reduction. The results of this analysis show that the poster predictors perform comparably worse than the control models, indicating that posters are likely not good predictors of ratings, and that further analysis with deep learning models should be performed to confirm this conclusion.
+
 \newpage
 
 \tableofcontents
@@ -354,7 +356,6 @@ Some suggestions for further analysis include training deeper networks on the 3-
 \section{Appendix: Word Signficiance Table}
 \label{appendix:word_signif_table}
 
-% TODO: move to appendix
 \begin{table}[H]
 \begin{tabular}[t]{l|l}
 \textbf{Word}        & \textbf{p-value} \\ \hline
