@@ -46,15 +46,15 @@
 
 \section{Introduction}
 
-The ability to predict the rating of a movie before its release would be a great asset to production companies. Ratings are generally correlated with the revenue made by a movie, as people tend to base their decisions of whether or not to see a movie on the reviews they read and the general attitude toward the movie. EXPAND
+The ability to predict the rating of a movie before its release would be a great asset to production companies. Ratings are generally correlated with the revenue made by a movie, as people tend to base their decisions of whether or not to see a movie on the reviews they read and the general attitude toward the movie. This analysis considers the use of movie posters as predictors of ratings, comparing the efficacy of this to classifiers built on other data about the movie.
 
 Various techniques have been applied to the question of predicting movie ratings based on different types of data. Oghina et. al. \cite{oghina_predicting_2012} applied prediction algorithms to data from the Internet Movie Database (IMDb) and attempted to predict ratings based on social media. Their analysis is based on textual data from sources like YouTube and Twitter, which they used to extract other textual features that were used in the final predictive model. Navarathna et. al. \cite{navarathna_predicting_2014} consiconsider a different model of movie rating prediction based on observations of moviegoers' faces and body language during a viewing experience. Other implementations of this problem include the problem of automatically predicting specific users' ratings, as discussed in Marović et. al. \cite{marovic_automatic_2011}, who use machine learning methods to predict these ratings in service of a recommendation algorithm.
 
 The paper by Kudagamage et. al. \cite{kudagamage_data_2018} discussed an approach to the prediction of movies' success based in data mining techniques. This analysis looks at various geometric properties of its data, including spatial clustering, and how this relates to the success of a movie. Instead of predicting movies directly, movies are partitioned into four clusters representing most successful, successful, unsuccessful, and least successful movies. 
 
-Other implementations of this problem include the problem of automatically predicting specific users' ratings, as discussed in Marović et. al. \cite{marovic_automatic_2011}, who use machine learning methods to predict these ratings in service of a recommendation algorithm.
-
 A natural extension of this research is demonstrated in Diao et. al. \cite{diao_jointly_2014}, which describes how ratings and review sentiments can be used to model movie recommendations. This model is again trained on IMDb data and thinks about how data scraped from the site on ratings and reviews can be used to build a recommendation algorithm. The ability to predict the ratings for a movie is a precursor to analyzing the market for the movie using such recommendation models, for example to predict how many streaming service users might watch this movie based on its predicted rating. 
+
+In this analysis, the use of posters as predictors of ratings is examined, using both fully-connected and convolutional neural networks as models trained on the posters. As a control, models trained on other data about the movies, e.g. the synopsis and genre, are also trained and tested as a point of comparison against the poster-based models. Different types of classifiers are used for the control, and the best of them is used as the point of comparison. Exploratory data analysis and A/B testing are also used in service of building a set of features for these control models.
 
 \section{Data}
 
@@ -121,7 +121,7 @@ The \texttt{genre\_ids} column is a list of genre IDs encoded as a string, so to
 \caption{\label{fig:genre_barplot}Number of movies in each genre.}
 \end{figure}
 
-Lastly, each movie poster was downloaded from TMDb and stored as a 140 $\times$ 92 $\times$ 3 array in NumPy, stored as a .mat file. The structure of this file is analagous to a dictionary, where each key is a movie ID (as a string) and each value is the 3-D array of RGB values describing the poster.
+Lastly, each movie poster was downloaded from TMDb and stored as a 92 $\times$ 140 $\times$ 3 array in NumPy, stored as a .mat file. The structure of this file is analagous to a dictionary, where each key is a movie ID (as a string) and each value is the 3-D array of RGB values describing the poster.
 
 \subsection{Exploratory Data Analysis}
 
@@ -161,8 +161,6 @@ Before modeling, a cursory analysis of the data yielded the interesting relation
 
 \end{itemize}
 
-\newpage
-
 \section{Analysis}
 
 \subsection{Words in Synopses}
@@ -193,8 +191,6 @@ Hyperparameters are tuned individually for sets of features chosen by the differ
 \label{section:class_posters}
 
 In this portion, movie posters, stored as 3-D arrays, are used as inputs to conlutional neural networks (CNNs) in order to classify the movie by rating. This section does not involve any features in \texttt{movies}. CNNs are trained on the 4-D array of all images and the classes encoded as dummy variables. The networks are compiled using categorical cross-entropy loss and the Adam optimization algorithm. They are evaluated as in \S \ref{section:class_no_posters}, using classification accuracy, RMSE, and MAE with 5-fold CV to determine the best network structure. The model with the best metrics is trained on the entire training set and evaluated on the test set.
-
-\newpage
 
 \section{Results}
 
@@ -309,7 +305,7 @@ What is interesting to note is that the all-fours CNN learns a more diffuse repr
 \caption{\label{fig:better_cnn_fifth_layer}Better CNN fifth layer features.}
 \end{figure}
 
-Several non-convolution neural networks were tested, including 11 non-convolutional fully-connected networks with 1 hidden layer trained over 100 epochs with batch size 16. The MAEs for these networks for different numbers of hidden units are provided in Table \ref{table:fcnn_maes}.
+Several non-convolution neural networks were tested, including 11 non-convolutional fully-connected networks (FCNNs) with 1 hidden layer trained over 100 epochs with batch size 16. The MAEs for these networks for different numbers of hidden units are provided in Table \ref{table:fcnn_maes}.
 
 \begin{table}
 \begin{center}\begin{tabular}{c|l}
@@ -326,20 +322,30 @@ Several non-convolution neural networks were tested, including 11 non-convolutio
 512 & 2.0121877412382276 \\
 1024 & 1.9250671607225567 \\
 \end{tabular}\end{center}
-\caption{\label{table:fcnn_maes}MAEs for different numbers of hidden units in non-convolutional fully-connected neural networks with 1 hidden layer.}
+\caption{\label{table:fcnn_maes}MAEs for different numbers of hidden units in non-convolutional FCNNs with 1 hidden layer.}
 \end{table} 
-
-The results found in this section support to main conclusions: that non-convultional neural networks trained on the flattened image appear to do better at classifying the movie posters, and that poster images are not necessarily good predictors of movie ratings.
 
 \section{Conclusions}
 
+Several interesting conclusions can be drawn from the analysis of this project, with two salient points:
+\begin{enumerate}
+\item fully-connected neural networks trained on flattened images appear to be better predictors than do convolutional neural networks, and
+\item movie posters are not the best predictors of ratings
+\end{enumerate}
 
+To the first, compare the errors noted in Table \ref{table:fcnn_maes} to those noted for the CNNs. The different is clearly in favor of the FCNNs on this score. One possible reason for this, however, may be the lack of depth of the CNNs trained in this analysis. Traditionally, deep learning performed with CNNs is done with networks of 15+ layers, a level clearly not broached in this analysis due to computation power limitations. So while, at a shallow level, it appears that the FCNNs have the upper hand, the convolutional networks may be able to outperform them at the level of deep learning.
+
+To the second, we observed that when comparing even the best networks trained in this analysis that they do not outperform the classifiers trained on other pieces of movie data from the \texttt{movies} dataframe. This is perhaps a reasonable conclusion as posters are more determinant of a person's desire to see a movie in the first place, and so likely have a lesser effect on their \textit{rating} of that movie after having seen it. 
+
+The principal components analysis reveals that while the data are largely well-represented by two principal components, which together explain almost 100\% of the variance in the data, there is quite a lot of variance among the sample points themselves. This is observed in the scale of the axes of Figures \ref{fig:scree_whole} and \ref{fig:pc1_pc2}. Figure \ref{fig:pc1_pc2} shows in particular that there is a more uniform density of points along different values of Principal Component 2 compared to a more right-skewed distribution along Principal Component 1.
+
+Some suggestions for further analysis include training deeper networks on the 3-tensor posters in order to see if these can outperform the FCNNs trained herein, and using posters perhaps as a predictor of box office-success. As noted above, posters are usually more involved in a person's decision to see a movie, and so the profits of a movie are likely better predicted by posters than are the ratings.
 
 % \begin{appendices}
 \newpage
 
 \addcontentsline{toc}{section}{References}
-\bibliographystyle{plain} % We choose the "plain" reference style
+\bibliographystyle{unsrt} % We choose the "plain" reference style
 \bibliography{references.bib}
 
 \newpage

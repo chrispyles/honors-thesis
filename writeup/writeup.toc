@@ -2,17 +2,17 @@
 \contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
 \contentsline {section}{\numberline {2}Data}{4}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Data Cleaning}{6}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}Exploratory Data Analysis}{7}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.2}Exploratory Data Analysis}{8}{subsection.2.2}%
 \contentsline {section}{\numberline {3}Analysis}{12}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Words in Synopses}{12}{subsection.3.1}%
 \contentsline {subsection}{\numberline {3.2}Principal Components Analysis}{12}{subsection.3.2}%
 \contentsline {subsection}{\numberline {3.3}Classification without Posters}{13}{subsection.3.3}%
 \contentsline {subsection}{\numberline {3.4}Classifying Movie Posters}{14}{subsection.3.4}%
-\contentsline {section}{\numberline {4}Results}{15}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Words in Synopses}{15}{subsection.4.1}%
+\contentsline {section}{\numberline {4}Results}{14}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Words in Synopses}{14}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}Principal Components Analysis}{15}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Classification without Posters}{15}{subsection.4.3}%
-\contentsline {subsection}{\numberline {4.4}Classifying Movie Posters}{19}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.3}Classification without Posters}{17}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Classifying Movie Posters}{18}{subsection.4.4}%
 \contentsline {section}{\numberline {5}Conclusions}{26}{section.5}%
-\contentsline {section}{References}{27}{section.5}%
-\contentsline {section}{\numberline {A}Appendix: Word Signficiance Table}{28}{appendix.A}%
+\contentsline {section}{References}{28}{Item.2}%
+\contentsline {section}{\numberline {A}Appendix: Word Signficiance Table}{29}{appendix.A}%
