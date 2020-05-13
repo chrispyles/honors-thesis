@@ -30,7 +30,7 @@
 \title{%
 	Predicting Movie Ratings with Movie Posters}
 \author{Christopher Pyles}
-\date{May 5, 2020}							% Activate to display a given date or no date
+\date{May 13, 2020}							% Activate to display a given date or no date
 
 \begin{document}
 
@@ -38,7 +38,7 @@
 
 \section*{Abstract}
 
-The efficacy of using movie posters as predictors of movie ratings is concerned by training both fully-connected and convolutional neural networks on poster images from The Movie Database. To understand the value of these models compared to others, control models trained on other data about the movies, e.g. the synopsis and genre, are built and trained. Various feature engineering and selection techniques are employed on these control models, including A/B testing to create features from the synopses. Principal components analysis is performed on the finalized dataset to consider the possibility of dimensionality reduction. The results of this analysis show that the poster predictors perform comparably worse than the control models, indicating that posters are likely not good predictors of ratings, and that further analysis with deep learning models should be performed to confirm this conclusion.
+The efficacy of using movie posters as predictors of movie ratings is concerned with training both fully-connected and convolutional neural networks on poster images from The Movie Database, a community-managed movie database owned by TiVo. The ability to use such features as elements in a prediction model would aid in honing many prediction algorithms used by streaming services to recommend movies to their viewers. Neural networks are here used because they require the least data preprocessing and because they naturally extend to working with image data. To understand the value of these models compared to others, control models trained on other data about the movies, e.g. the synopsis and genre, are built and trained. These models include support vector, ridge, k-nearest neighbors, and decision tree classifiers. Various feature engineering and selection techniques are employed on these control models, including A/B testing to create features from the synopses. Principal components analysis is performed on the finalized dataset to consider the possibility of dimensionality reduction. The results of this analysis show that the poster predictors perform comparably worse than the control models, indicating that under these circumstances posters are likely not good predictors of ratings, and that further analysis with deep learning models or other classifiers should be performed to confirm this conclusion.
 
 \newpage
 
@@ -50,39 +50,19 @@ The efficacy of using movie posters as predictors of movie ratings is concerned 
 
 The ability to predict the rating of a movie before its release would be a great asset to production companies. Ratings are generally correlated with the revenue made by a movie, as people tend to base their decisions of whether or not to see a movie on the reviews they read and the general attitude toward the movie. This analysis considers the use of movie posters as predictors of ratings, comparing the efficacy of this to classifiers built on other data about the movie.
 
-Various techniques have been applied to the question of predicting movie ratings based on different types of data. Oghina et. al. \cite{oghina_predicting_2012} applied prediction algorithms to data from the Internet Movie Database (IMDb) and attempted to predict ratings based on social media. Their analysis is based on textual data from sources like YouTube and Twitter, which they used to extract other textual features that were used in the final predictive model. Navarathna et. al. \cite{navarathna_predicting_2014} consiconsider a different model of movie rating prediction based on observations of moviegoers' faces and body language during a viewing experience. Other implementations of this problem include the problem of automatically predicting specific users' ratings, as discussed in Marović et. al. \cite{marovic_automatic_2011}, who use machine learning methods to predict these ratings in service of a recommendation algorithm.
+Various techniques have been applied to the question of predicting movie ratings based on different types of data. Oghina et. al. \cite{oghina_predicting_2012} applied prediction algorithms to data from the Internet Movie Database (IMDb) and attempted to predict ratings based on social media. Their analysis is based on textual data from sources like YouTube and Twitter, which they used to extract other textual features that were used in the final predictive model. Navarathna et. al. \cite{navarathna_predicting_2014} consider a different model of movie rating prediction based on observations of moviegoers' faces and body language during a viewing experience. Other implementations of this problem include the problem of automatically predicting specific users' ratings, as discussed in Marović et. al. \cite{marovic_automatic_2011}, who use machine learning methods to predict these ratings in service of a recommendation algorithm.
 
 The paper by Kudagamage et. al. \cite{kudagamage_data_2018} discussed an approach to the prediction of movies' success based in data mining techniques. This analysis looks at various geometric properties of its data, including spatial clustering, and how this relates to the success of a movie. Instead of predicting movies directly, movies are partitioned into four clusters representing most successful, successful, unsuccessful, and least successful movies. 
 
 A natural extension of this research is demonstrated in Diao et. al. \cite{diao_jointly_2014}, which describes how ratings and review sentiments can be used to model movie recommendations. This model is again trained on IMDb data and thinks about how data scraped from the site on ratings and reviews can be used to build a recommendation algorithm. The ability to predict the ratings for a movie is a precursor to analyzing the market for the movie using such recommendation models, for example to predict how many streaming service users might watch this movie based on its predicted rating. 
 
-In this analysis, the use of posters as predictors of ratings is examined, using both fully-connected and convolutional neural networks as models trained on the posters. As a control, models trained on other data about the movies, e.g. the synopsis and genre, are also trained and tested as a point of comparison against the poster-based models. Different types of classifiers are used for the control, and the best of them is used as the point of comparison. Exploratory data analysis and A/B testing are also used in service of building a set of features for these control models.
+In this analysis, the use of posters as predictors of ratings is examined, using both fully-connected and convolutional neural networks as models trained on the posters. Neural networks, as opposed to other types of classifiers, are used in this analyzes because they require the least data preprocessing and because they naturally extend to working with images, and the efficacy of convolutional neural networks as image predictors for a variety of problems has been shown again and again. As a control, models trained on other data about the movies, e.g. the synopsis and genre, are also trained and tested as a point of comparison against the poster-based models. Different types of classifiers are used for the control, and the best of them is used as the point of comparison. Exploratory data analysis and A/B testing are also used in service of building a set of features for these control models.
+
+This project uses the programming language Python to perform the analysis and the neural networks are provided by the package keras with tensorflow as its backend. Packages including numpy, scikit-learn, matplotlib, seaborn, pandas, and datetime are used to manipulate the data, create plots, and interact with the keras models.
 
 \section{Data}
 
-The data used in this project is from \href{https://api.tmdb.org}{The Movie Database's (TMDb) API}. The data queried covers movies released in 2018 in English, spanning many genres: 
-
-\begin{itemize}
-\item Action ($n=242$)
-\item Adventure ($n=134$)
-\item Animation ($n=116$)
-\item Comedy ($n=566$)
-\item Crime ($n=154$)
-\item Documentary ($n=432$)
-\item Drama ($n=746$)
-\item Family ($n=147$)
-\item Fantasy ($n=143$)
-\item History ($n=66$)
-\item Horror ($n=438$)
-\item Music ($n=119$)
-\item Mystery ($n=143$)
-\item Romance ($n=222$)
-\item Science Fiction ($n=188$)
-\item TV Movie ($n=194$)
-\item Thriller ($n=506$)
-\item War ($n=29$)
-\item Western ($n=31$)
-\end{itemize}
+The data used in this project is from \href{https://api.tmdb.org}{The Movie Database's (TMDb) API}. TMDb is a community-managed online database of movie and television data that is owned and operated by TiVo. The data queried covers movies released in 2018 in English, spanning many genres: Action, Adventure, Animation, Comedy, Crime, Documentary, Drama, Family, Fantasy, Histor, Horror, Music, Mystery, Romance, Science Fiction, TV Movie, Thriller, War, and Western. Figure \ref{fig:genre_barplot} shows the number of movies in each genre.
 
 The data, after being queried, were joined into a single table and written to a CSV file. The columns of interest are described in Table \ref{table:cols_of_interest}. After dropping rows with missing values in the columns of interest, the data contained $n=2700$ rows.
 
@@ -114,7 +94,7 @@ The \texttt{vote\_average} column ($\mu = 6.628$, $\sigma = 1.939$) describes th
 \caption{\label{fig:rating_barplot}Number of movies for each value of ratings, rounded from \texttt{vote\_average}.}
 \end{figure}
 
-To clean the movie synopses, all letters were transformed to lowercas, and any characters not matching the regex \texttt{[A-Za-z0-9 ]} were replaced with spaces.
+To clean the movie synopses, all letters were transformed to lowercase, and any characters not matching the regex \texttt{[A-Za-z0-9 ]} were replaced with spaces.
 
 The \texttt{genre\_ids} column is a list of genre IDs encoded as a string, so to start any empty lists, \texttt{"[]"}, were replaced with \texttt{NaN}. Then, the string were split into Python lists of IDs, and were joined with the \texttt{genres} table, so that \texttt{movies} had a column \texttt{genres} where each value is a list of genres for that movie. Figure \ref{fig:genre_barplot} shows the breakdown of movies by genre.
 
@@ -166,18 +146,19 @@ Before modeling, a cursory analysis of the data yielded the interesting relation
 \section{Analysis}
 
 \subsection{Words in Synopses}
+\label{section:words_in_synopses}
 
-As the first part of this analysis, the statistical significance of the presence of different words in synopses is studied using hypothesis testing. The null hypothesis for this test is that the presence of a word does not affect the average rating, and the alternative is that the presence of the word results in an increase in rating. The test statistic used here is the aboslute difference between the mean rating of movies where the word is present in the synopsis and the movies where it is not. Under the null hypothesis, the truth value of a word being present in a synopsis is shuffled for each observation, so that same number of ``present''s is obtained. Then, the test statistic is computed and the p-value is calculated as the proportion of the test statistic values that are greater than or equal to the observed value for that word. Finally, those words whose p-values indicate statistical significance are added to the movies data as one-hot features, with a 1 in their column if the word is present in the synposis and a 0 otherwise.
+As the first part of this analysis, the statistical significance of the presence of different words in synopses is studied using hypothesis testing. The null hypothesis for this test is that the presence of a word does not affect the average rating, and the alternative is that the presence of the word results in an increase in rating. The test statistic used here is the aboslute difference between the mean rating of movies where the word is present in the synopsis and the movies where it is not. Under the null hypothesis, the truth value of a word being present in a synopsis is shuffled for each observation, so that same number of ``present''s is obtained. Then, the test statistic is computed and the p-value is calculated as the proportion of the test statistic values that are greater than or equal to the observed value for that word. Finally, those words whose p-values indicate statistical significance are added to the movies data as one-hot features, with a 1 in their column if the word is present in the synposis and a 0 otherwise. These dummy variables will be used as some of the features in the control model.
 
 \subsection{Principal Components Analysis}
 \label{section:pca}
 
-After analyzing the presence of words in synopses, the dimensionality of the data is considered for reduction using principal components analysis (PCA). In this portion of the analysis, all of the features now in \texttt{movies} are analyzes via PCA in order to determine what proportion of the variance in the data can be explained using only a few principal components as a basis. This is accomplished with scikit-learn's \texttt{sklearn.decomposition.PCA} class.
+After analyzing the presence of words in synopses, the dimensionality of the data is considered for reduction using principal components analysis (PCA). In this portion of the analysis, all of the features now in \texttt{movies} are analyzed via PCA in order to determine what proportion of the variance in the data can be explained using only a few principal components as a basis. This is accomplished with scikit-learn's \texttt{sklearn.decomposition.PCA} class. The principal components are considered only for the purpose of analyzing the variance of the data, and will not be used in modeling.
 
 \subsection{Classification without Posters}
 \label{section:class_no_posters}
 
-The next step in the analysis is to attempt classification using the features in \texttt{movies} alone (i.e. without the posters). In this section, several different classification methods are tested, including a ridge classifier, a decision tree classifier, a support vector classifier (SVC), and a $k$-nearest neighbors (kNN) classifier. Each of these models is trained on training data from \texttt{movies} and evaluated using different error metrics on testing data from \texttt{movies}. Three different error metrics are used to evaluate each classifier: classification accuracy, root-mean-squared prediction error (RMSE), and mean absolute error (MAE). The last two, normally regression metrics, are used because the ratings are derived from continuous variables, and a classifier that classifies a movie closer to its rating than another is more accurate, and hit-miss accuracy does not account for this.
+The next step in the analysis is to attempt classification using the features in \texttt{movies} alone (i.e. without the posters). These include the columns described in Table \ref{table:cols_of_interest} and the words found in \S \ref{section:words_in_synopses} In this section, several different classification methods are tested, including a ridge classifier, a decision tree classifier, a support vector classifier (SVC), and a $k$-nearest neighbors (kNN) classifier. Each of these models is trained on training data from \texttt{movies} and evaluated using different error metrics on testing data from \texttt{movies}. Three different error metrics are used to evaluate each classifier: classification accuracy, root-mean-squared prediction error (RMSE), and mean absolute error (MAE). The last two, normally regression metrics, are used because the ratings are derived from continuous variables, and a classifier that classifies a movie closer to its rating than another is more accurate, and hit-miss accuracy does not account for this.
 
 In order to select features, multiple methods are used and compared. The $k$ best features based on chi-squared statistics, ANOVA F-value, and mutual information are each selected and compared using tuned hyperparameters for each model. $k$ is also tuned using hyperparameter selection.
 
@@ -187,24 +168,24 @@ In order to select features, multiple methods are used and compared. The $k$ bes
 \item SVC: $C$, the regularization parameter (analagous to $\alpha^{-1}$ from the ridge classifier)
 \item kNN classifier: the number of neighbors
 \end{itemize}
-Hyperparameters are tuned individually for sets of features chosen by the different methods of feature selection described above. The model with the best CV error is chosen and trained on the training set using the corresponding features and evaluated using testing error.
+These are the only hyperparameters tuned in this anlaysis because they most closely affect the accuracy of the models, mainly having to do with preventing overfitting. Hyperparameters are tuned individually for sets of features chosen by the different methods of feature selection described above. The model with the best CV error is chosen and trained on the training set using the corresponding features and evaluated using testing error.
 
 \subsection{Classifying Movie Posters}
 \label{section:class_posters}
 
-In this portion, movie posters, stored as 3-D arrays, are used as inputs to conlutional neural networks (CNNs) in order to classify the movie by rating. This section does not involve any features in \texttt{movies}. CNNs are trained on the 4-D array of all images and the classes encoded as dummy variables. The networks are compiled using categorical cross-entropy loss and the Adam optimization algorithm. They are evaluated as in \S \ref{section:class_no_posters}, using classification accuracy, RMSE, and MAE with 5-fold CV to determine the best network structure. The model with the best metrics is trained on the entire training set and evaluated on the test set.
+In this portion, movie posters, stored as 3-tensors, are used as inputs to conlutional neural networks (CNNs) in order to classify the movie by rating. This section does not involve any features in \texttt{movies}. CNNs are trained on the 4-D array of all images and the classes encoded as dummy variables. The networks are compiled using categorical cross-entropy loss and the Adam optimization algorithm. They are evaluated as in \S \ref{section:class_no_posters}, using classification accuracy, RMSE, and MAE with 5-fold CV to determine the best network structure. The model with the best metrics is trained on the entire training set and evaluated on the test set.
 
 \section{Results}
 
 \subsection{Words in Synopses}
 \label{section:words_results}
 
-This analysis found that there were 110 words that were statistically significant, summarized in Table \ref{table:word_p_values} (cf. Appendix \ref{appendix:word_signif_table}) with their p-values. Each of these words was added as a feature to \texttt{movies} as dummy variables with 0-1 values indicating the presence of that word in the synopsis, resulting in the data points in \texttt{movies} becoming 141-dimensional.
+This analysis found that there were 110 words that were statistically significant in terms of the distribution of ratings, summarized in Table \ref{table:word_p_values} (cf. Appendix \ref{appendix:word_signif_table}) with their p-values. Each of these words was added as a feature to \texttt{movies} as dummy variables with 0-1 values indicating the presence of that word in the synopsis, resulting in the data points in \texttt{movies} becoming 141-dimensional. These new features will be used in prediction for the control models.
 
 \subsection{Principal Components Analysis}
 \label{section:pca_results}
 
-The PCA on \texttt{movies} shows that only a few principal componetns (two, in fact) are required to account for almost 100\% of the variance in the data set, as demonstrated in Figures \ref{fig:scree_whole} and \ref{fig:scree_first_10}.
+PCA was performed on \textit{all} columns of \texttt{movies}, including both the word-significance dummy variables and some of the original columns listed in Table \ref{table:cols_of_interest}. PCA shows that only a few principal components (two, in fact) are required to account for almost 100\% of the variance in the data set, as demonstrated in Figures \ref{fig:scree_whole} and \ref{fig:scree_first_10} (the former shows all 141 principal components and the latter is truncated to the first 10 to better see the drop-off in explained variance). 
 
 \begin{figure}%[H]
 \includegraphics[width=\textwidth]{scree_whole}
@@ -231,12 +212,14 @@ As Figure \ref{fig:pca_var_explained} shows, the first two princpal components a
 \subsection{Classification without Posters}
 \label{section:class_no_posters_results}
 
-After the first round of hyperparameter search, the ridge classifier performed best with $\alpha=0$, the support vector classifier with $C=100$, and the kNN classifier with 1 neighbor. The decision tree classifier had no hyperparameters of interest. The results of feature selection and tuning are provided in Table \ref{table:class_no_poster_results}. Table \ref{table:class_no_poster_test_results} details the testing MAE and RMSE for each model and feature selection scheme. The hyperparameters used in these models are:
+After the first round of hyperparameter search, the ridge classifier performed best with $\alpha=0$, the support vector classifier with $C=100$, and the kNN classifier with 1 neighbor. The decision tree classifier had no hyperparameters of interest. The results of feature selection and tuning on the training data are provided in Table \ref{table:class_no_poster_results}. Table \ref{table:class_no_poster_test_results} details the testing MAE and RMSE for each tuned model and feature selection scheme from Table \ref{table:class_no_poster_results}. As an example, Table \ref{table:class_no_poster_results} shows that a kNN classififier with 1 neighbor and ANOVA F-value feature selection had a validation error of 0.32484, and Table \ref{table:class_no_poster_test_results} shows that that same model had a testing MAE of 1.18699 and RMSE of 2.20421. The hyperparameters used in these models are:
+
 \begin{itemize}
 \item ridge: $\alpha=0$
 \item SVC: $C=100$
 \item kNN: 1 neighbor
 \end{itemize}
+
 The results show that a support vector classifier with $C=100$ and feature selection using mutual information is the best classifier, with an MAE of 0.87154 and an RMSE of 1.72500. The predictions of this classifier are depicted in Figure \ref{fig:no_poster_test_results}. This feature selection scheme chose 10 features: \texttt{popularity}, \texttt{vote\_count}, \texttt{Horror}, \texttt{Music}, \texttt{Thriller}, \texttt{overview\_len}, \texttt{day}, \texttt{take}, \texttt{direct}, and \texttt{evil}. The last three features correspond to the presence of words as described in \S \ref{section:words_results}.
 
 \begin{table}
@@ -335,7 +318,7 @@ Several interesting conclusions can be drawn from the analysis of this project, 
 \item movie posters are not the best predictors of ratings
 \end{enumerate}
 
-To the first, compare the errors noted in Table \ref{table:fcnn_maes} to those noted for the CNNs. The different is clearly in favor of the FCNNs on this score. One possible reason for this, however, may be the lack of depth of the CNNs trained in this analysis. Traditionally, deep learning performed with CNNs is done with networks of 15+ layers, a level clearly not broached in this analysis due to computation power limitations. So while, at a shallow level, it appears that the FCNNs have the upper hand, the convolutional networks may be able to outperform them at the level of deep learning.
+To the first, compare the errors noted in Table \ref{table:fcnn_maes} to those noted for the CNNs. The difference is clearly in favor of the FCNNs on this score. One possible reason for this, however, may be the lack of depth of the CNNs trained in this analysis. Traditionally, deep learning performed with CNNs is done with networks of 15+ layers, a level clearly not broached in this analysis due to computation power limitations. So while, at a shallow level, it appears that the FCNNs have the upper hand, the convolutional networks may be able to outperform them at the level of deep learning.
 
 To the second, we observed that when comparing even the best networks trained in this analysis that they do not outperform the classifiers trained on other pieces of movie data from the \texttt{movies} dataframe. This is perhaps a reasonable conclusion as posters are more determinant of a person's desire to see a movie in the first place, and so likely have a lesser effect on their \textit{rating} of that movie after having seen it. 
 
